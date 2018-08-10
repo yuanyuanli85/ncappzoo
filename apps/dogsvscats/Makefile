@@ -1,5 +1,5 @@
 DATA_ROOT?=data
-CAFFE_PATH?=~/workspace/caffe
+CAFFE_PATH?=~/caffe
 TRAIN_DATA_ROOT=$(DATA_ROOT)/train
 TRAIN_LMDB_ROOT=$(DATA_ROOT)/dogsvscats_train_lmdb
 VAL_LMDB_ROOT=$(DATA_ROOT)/dogsvscats_val_lmdb
@@ -10,14 +10,12 @@ all: deps unzip labels lmdb mean
 .PHONY: deps
 deps:
 	@echo "Installing dependencies..."
-	sudo apt-get -y install unzip 
-	sudo pip install pyyaml
 
 .PHONY: unzip
 unzip:
 	@echo "Extracting dataset..."
-	@( unzip $(DATA_ROOT)/test1.zip -d $(DATA_ROOT) )
-	@( unzip $(DATA_ROOT)/train.zip -d $(DATA_ROOT) )
+	@( tar -xvf $(DATA_ROOT)/images.tar.gz -C $(DATA_ROOT) )
+	@( tar -xvf $(DATA_ROOT)/annotations.tar.gz -C $(DATA_ROOT) )
 
 .PHONY: labels
 labels:
@@ -52,8 +50,6 @@ help:
 .PHONY: clean
 clean:
 	@echo "making clean"
-	rm -rf $(DATA_ROOT)/train
-	rm -rf $(DATA_ROOT)/test1
 	rm -rf $(DATA_ROOT)/dogsvscats_train_lmdb
 	rm -rf $(DATA_ROOT)/dogsvscats_val_lmdb
 	rm -rf $(DATA_ROOT)/dogsvscats-train-mean.binaryproto

@@ -13,24 +13,39 @@ import sys
 import glob
 import ntpath
 
-IMAGES_PATH = sys.argv[1] + '/train/'
+DATA_PATH = sys.argv[1]
 
 # ---- Main function (entry point for this script ) --------------------------
 def main():
-    fVal = open( IMAGES_PATH + 'val.txt', 'w' )
-    fTrain = open( IMAGES_PATH + 'train.txt', 'w' )
+    fVal = open( DATA_PATH + '/val.txt', 'w' )
+    fTrain = open( DATA_PATH + '/train.txt', 'w' )
+
+    file_list = []
+    with open(os.path.join(DATA_PATH, 'annotations/list.txt')) as f:
+        lines = f.readlines()
+        for strline in lines:
+            if '#' in strline:
+                continue
+            # Annotation format: image, id, SPECIES id, breed id
+            # 1 -> cat, 2 -> dog
+            # Abyssinian_100 1 1 1
+            elems = strline.strip().split()
+            image_file_name = elems[0]+'.jpg'
+            class_id = elems[2]
+            if class_id == '1':
+                class_name = 'cat'
+            else:
+                class_name = 'dog'
+            file_list.append((image_file_name, class_name))
 
     # Create a list of all files in current directory & sub-directories
-    file_list = [ os.path.basename(img) for img in 
-                  glob.glob( IMAGES_PATH + '*.jpg' ) ]
-
-    for file_index, file_name in enumerate( file_list ):
-        if 'cat' in file_name:
+    for file_index, (file_name, class_name) in enumerate( file_list ):
+        if class_name == 'cat'  :
             if file_index % 6 == 0:
                 fVal.write( file_name + ' 0\n' )
             else:
                 fTrain.write( file_name + ' 0\n' )
-        if 'dog' in file_name:
+        if class_name == 'dog':
             if file_index % 6 == 0:
                 fVal.write( file_name + ' 1\n' )
             else:

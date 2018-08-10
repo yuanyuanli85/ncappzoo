@@ -19,7 +19,7 @@ This code example requires that the following components are available:
    git clone https://github.com/movidius/ncappzoo
    ~~~
 
-2. Download <a href="https://www.kaggle.com/c/dogs-vs-cats/data">test1.zip and train1.zip</a> from Kaggle, into `~/workspace/ncappzoo/apps/dogsvscats/data`.
+2. Download <a href="http://www.robots.ox.ac.uk/~vgg/data/pets/">aimages.tar.gz and annotations.tar.gz</a> from Kaggle, into `~/workspace/ncappzoo/apps/dogsvscats/data`.
 
 3. Now run the below steps on your training hardware:
 
